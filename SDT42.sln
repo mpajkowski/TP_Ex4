@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app", "gui\app.csproj", "{4234C8B7-FA5F-41CF-9EBA-FA25AC551655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "service", "services\service.csproj", "{7801940B-9316-4303-9A5C-5E00915036EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4234C8B7-FA5F-41CF-9EBA-FA25AC551655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4234C8B7-FA5F-41CF-9EBA-FA25AC551655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4234C8B7-FA5F-41CF-9EBA-FA25AC551655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4234C8B7-FA5F-41CF-9EBA-FA25AC551655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7801940B-9316-4303-9A5C-5E00915036EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7801940B-9316-4303-9A5C-5E00915036EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7801940B-9316-4303-9A5C-5E00915036EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7801940B-9316-4303-9A5C-5E00915036EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC32A102-E1CC-4024-91A0-D62268FDAE48}
+	EndGlobalSection
+EndGlobal
