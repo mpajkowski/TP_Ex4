@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace services
 {
-    class Repository
+    public class Repository
     {
         private static DatabaseDataContext Context { get; set; } = new DatabaseDataContext();
 
         public static void CreateDogEntry(Dog dog)
         {
             Context.Dogs.InsertOnSubmit(dog);
+            Context.SubmitChanges();
+        }
+
+        public static void CreateClientEntry(Client client)
+        {
+            Context.Clients.InsertOnSubmit(client);
             Context.SubmitChanges();
         }
 
