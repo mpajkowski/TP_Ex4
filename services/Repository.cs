@@ -10,13 +10,13 @@ namespace services
     {
         private static DatabaseDataContext Context { get; set; } = new DatabaseDataContext();
 
-        public static void CreateVehicle(Vehicle vehicle)
+        public static void CreateDogEntry(Dog dog)
         {
-            Context.Vehicles.InsertOnSubmit(vehicle);
+            Context.Dogs.InsertOnSubmit(dog);
             Context.SubmitChanges();
         }
 
-        public static List<Client> GetClients()
+        public static List<Client> GetClientsList()
         {
             return (from client in Context.Clients select client).ToList();
         }
@@ -29,16 +29,16 @@ namespace services
                     .Single();
         }
 
-        public static List<Vehicle> GetVehicles()
+        public static List<Dog> GetDogsList()
         {
-            return (from vehicle in Context.Vehicles select vehicle).ToList();
+            return (from dog in Context.Dogs select dog).ToList();
         }
 
-        public static Vehicle GetVehicleById(int id)
+        public static Dog GetDogById(int id)
         {
-            return (from vehicle in Context.Vehicles
-                    where id == vehicle.client_id
-                    select vehicle)
+            return (from dog in Context.Dogs
+                    where id == dog.dog_owner_id
+                    select dog)
                     .Single();
         }
         public static void DeleteClient(Client client)
@@ -54,16 +54,16 @@ namespace services
                 Context.SubmitChanges();
             }
         }
-        public static void DeleteCar(Vehicle vehicle)
+        public static void DeleteDog(Dog dog)
         {
-            Vehicle toRemove = (from item in Context.Vehicles
-                               where item.vehicle_id == vehicle.vehicle_id
-                               select item)
-                               .First();
+            Dog toRemove = (from item in Context.Dogs
+                            where item.dog_id == dog.dog_id
+                            select item)
+                            .First();
 
             if (toRemove != null)
             {
-                Context.Vehicles.DeleteOnSubmit(toRemove);
+                Context.Dogs.DeleteOnSubmit(toRemove);
                 Context.SubmitChanges();
             }
         }
@@ -81,15 +81,15 @@ namespace services
 
             Context.SubmitChanges();
         }
-        public static void UpdateVehicleOwner(Vehicle vehicle, Client newOwner)
+        public static void UpdateDogData(Dog dog)
         {
-            Vehicle toUpdate = (from item in Context.Vehicles
-                               where item.vehicle_id == vehicle.vehicle_id
-                               select item)
-                               .Single();
+            Dog toUpdate = (from item in Context.Dogs
+                            where item.dog_id == dog.dog_id
+                            select item)
+                            .Single();
 
-            int newOwnerId = newOwner.client_id;
-            toUpdate.client_id = newOwnerId;
+            toUpdate.dog_name = dog.dog_name;
+            toUpdate.dog_owner_id = dog.dog_owner_id;
 
             Context.SubmitChanges();
         }

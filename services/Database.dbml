@@ -5,16 +5,15 @@
       <Column Name="client_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="client_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="client_surname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Client_Vehicle" Member="Vehicles" ThisKey="client_id" OtherKey="client_id" Type="Vehicle" />
+      <Association Name="Client_Dog" Member="Dogs" ThisKey="client_id" OtherKey="dog_owner_id" Type="Dog" />
     </Type>
   </Table>
-  <Table Name="dbo.Vehicles" Member="Vehicles">
-    <Type Name="Vehicle">
-      <Column Name="vehicle_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="client_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="vehicle_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="capacity" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
-      <Association Name="Client_Vehicle" Member="Client" ThisKey="client_id" OtherKey="client_id" Type="Client" IsForeignKey="true" />
+  <Table Name="dbo.Dogs" Member="Dogs">
+    <Type Name="Dog">
+      <Column Name="dog_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="dog_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="dog_owner_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Client_Dog" Member="Client" ThisKey="dog_owner_id" OtherKey="client_id" Type="Client" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

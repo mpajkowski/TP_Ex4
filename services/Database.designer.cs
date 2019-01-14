@@ -33,9 +33,9 @@ namespace services
     partial void InsertClient(Client instance);
     partial void UpdateClient(Client instance);
     partial void DeleteClient(Client instance);
-    partial void InsertVehicle(Vehicle instance);
-    partial void UpdateVehicle(Vehicle instance);
-    partial void DeleteVehicle(Vehicle instance);
+    partial void InsertDog(Dog instance);
+    partial void UpdateDog(Dog instance);
+    partial void DeleteDog(Dog instance);
     #endregion
 		
 		public DatabaseDataContext() : 
@@ -76,11 +76,11 @@ namespace services
 			}
 		}
 		
-		public System.Data.Linq.Table<Vehicle> Vehicles
+		public System.Data.Linq.Table<Dog> Dogs
 		{
 			get
 			{
-				return this.GetTable<Vehicle>();
+				return this.GetTable<Dog>();
 			}
 		}
 	}
@@ -97,7 +97,7 @@ namespace services
 		
 		private string _client_surname;
 		
-		private EntitySet<Vehicle> _Vehicles;
+		private EntitySet<Dog> _Dogs;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -113,7 +113,7 @@ namespace services
 		
 		public Client()
 		{
-			this._Vehicles = new EntitySet<Vehicle>(new Action<Vehicle>(this.attach_Vehicles), new Action<Vehicle>(this.detach_Vehicles));
+			this._Dogs = new EntitySet<Dog>(new Action<Dog>(this.attach_Dogs), new Action<Dog>(this.detach_Dogs));
 			OnCreated();
 		}
 		
@@ -177,16 +177,16 @@ namespace services
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Vehicle", Storage="_Vehicles", ThisKey="client_id", OtherKey="client_id")]
-		public EntitySet<Vehicle> Vehicles
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Dog", Storage="_Dogs", ThisKey="client_id", OtherKey="dog_owner_id")]
+		public EntitySet<Dog> Dogs
 		{
 			get
 			{
-				return this._Vehicles;
+				return this._Dogs;
 			}
 			set
 			{
-				this._Vehicles.Assign(value);
+				this._Dogs.Assign(value);
 			}
 		}
 		
@@ -210,32 +210,30 @@ namespace services
 			}
 		}
 		
-		private void attach_Vehicles(Vehicle entity)
+		private void attach_Dogs(Dog entity)
 		{
 			this.SendPropertyChanging();
 			entity.Client = this;
 		}
 		
-		private void detach_Vehicles(Vehicle entity)
+		private void detach_Dogs(Dog entity)
 		{
 			this.SendPropertyChanging();
 			entity.Client = null;
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicles")]
-	public partial class Vehicle : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Dogs")]
+	public partial class Dog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _vehicle_id;
+		private int _dog_id;
 		
-		private System.Nullable<int> _client_id;
+		private string _dog_name;
 		
-		private string _vehicle_name;
-		
-		private float _capacity;
+		private System.Nullable<int> _dog_owner_id;
 		
 		private EntityRef<Client> _Client;
 		
@@ -243,107 +241,85 @@ namespace services
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void Onvehicle_idChanging(int value);
-    partial void Onvehicle_idChanged();
-    partial void Onclient_idChanging(System.Nullable<int> value);
-    partial void Onclient_idChanged();
-    partial void Onvehicle_nameChanging(string value);
-    partial void Onvehicle_nameChanged();
-    partial void OncapacityChanging(float value);
-    partial void OncapacityChanged();
+    partial void Ondog_idChanging(int value);
+    partial void Ondog_idChanged();
+    partial void Ondog_nameChanging(string value);
+    partial void Ondog_nameChanged();
+    partial void Ondog_owner_idChanging(System.Nullable<int> value);
+    partial void Ondog_owner_idChanged();
     #endregion
 		
-		public Vehicle()
+		public Dog()
 		{
 			this._Client = default(EntityRef<Client>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int vehicle_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dog_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int dog_id
 		{
 			get
 			{
-				return this._vehicle_id;
+				return this._dog_id;
 			}
 			set
 			{
-				if ((this._vehicle_id != value))
+				if ((this._dog_id != value))
 				{
-					this.Onvehicle_idChanging(value);
+					this.Ondog_idChanging(value);
 					this.SendPropertyChanging();
-					this._vehicle_id = value;
-					this.SendPropertyChanged("vehicle_id");
-					this.Onvehicle_idChanged();
+					this._dog_id = value;
+					this.SendPropertyChanged("dog_id");
+					this.Ondog_idChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_client_id", DbType="Int")]
-		public System.Nullable<int> client_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dog_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string dog_name
 		{
 			get
 			{
-				return this._client_id;
+				return this._dog_name;
 			}
 			set
 			{
-				if ((this._client_id != value))
+				if ((this._dog_name != value))
+				{
+					this.Ondog_nameChanging(value);
+					this.SendPropertyChanging();
+					this._dog_name = value;
+					this.SendPropertyChanged("dog_name");
+					this.Ondog_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dog_owner_id", DbType="Int")]
+		public System.Nullable<int> dog_owner_id
+		{
+			get
+			{
+				return this._dog_owner_id;
+			}
+			set
+			{
+				if ((this._dog_owner_id != value))
 				{
 					if (this._Client.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.Onclient_idChanging(value);
+					this.Ondog_owner_idChanging(value);
 					this.SendPropertyChanging();
-					this._client_id = value;
-					this.SendPropertyChanged("client_id");
-					this.Onclient_idChanged();
+					this._dog_owner_id = value;
+					this.SendPropertyChanged("dog_owner_id");
+					this.Ondog_owner_idChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string vehicle_name
-		{
-			get
-			{
-				return this._vehicle_name;
-			}
-			set
-			{
-				if ((this._vehicle_name != value))
-				{
-					this.Onvehicle_nameChanging(value);
-					this.SendPropertyChanging();
-					this._vehicle_name = value;
-					this.SendPropertyChanged("vehicle_name");
-					this.Onvehicle_nameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_capacity", DbType="Real NOT NULL")]
-		public float capacity
-		{
-			get
-			{
-				return this._capacity;
-			}
-			set
-			{
-				if ((this._capacity != value))
-				{
-					this.OncapacityChanging(value);
-					this.SendPropertyChanging();
-					this._capacity = value;
-					this.SendPropertyChanged("capacity");
-					this.OncapacityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Vehicle", Storage="_Client", ThisKey="client_id", OtherKey="client_id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Dog", Storage="_Client", ThisKey="dog_owner_id", OtherKey="client_id", IsForeignKey=true)]
 		public Client Client
 		{
 			get
@@ -360,17 +336,17 @@ namespace services
 					if ((previousValue != null))
 					{
 						this._Client.Entity = null;
-						previousValue.Vehicles.Remove(this);
+						previousValue.Dogs.Remove(this);
 					}
 					this._Client.Entity = value;
 					if ((value != null))
 					{
-						value.Vehicles.Add(this);
-						this._client_id = value.client_id;
+						value.Dogs.Add(this);
+						this._dog_owner_id = value.client_id;
 					}
 					else
 					{
-						this._client_id = default(Nullable<int>);
+						this._dog_owner_id = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Client");
 				}
