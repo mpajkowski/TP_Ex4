@@ -22,7 +22,7 @@ namespace services
             Context.SubmitChanges();
         }
 
-        public static List<Client> GetClientsList()
+        public static IEnumerable<Client> GetClientsList()
         {
             return (from client in Context.Clients select client).ToList();
         }
@@ -35,7 +35,7 @@ namespace services
                     .Single();
         }
 
-        public static List<Dog> GetDogsList()
+        public static IEnumerable<Dog> GetDogsList()
         {
             return (from dog in Context.Dogs select dog).ToList();
         }

@@ -19,31 +19,23 @@ namespace app.Model
             Task.Run(() => Repository.CreateDogEntry(dog));
         }
 
-        public static async Task<IEnumerable<Client>> GetClientsList()
+        public static IEnumerable<Client> GetClientsList()
         {
-            IEnumerable<Client> clientList = null;
-            var job = await Task.Run(() => clientList = Repository.GetClientsList());
-            return clientList; 
+            return Repository.GetClientsList();
         }
-        public static async Task<Client> GetClientById(int id)
+        public static Client GetClientById(int id)
         {
-            Client client = null;
-            await Task.Run(() => client = Repository.GetClientById(id));
-            return client;
+            return Repository.GetClientById(id);
         }
 
-        public static async Task<IEnumerable<Dog>> GetDogsList()
+        public static IEnumerable<Dog> GetDogsList()
         {
-            IEnumerable<Dog> dogList = null;
-            await Task.Run(() => dogList = Repository.GetDogsList());
-            return dogList; 
+            return Repository.GetDogsList();
         }
 
-        public static async Task<Dog> GetDogById(int id)
+        public static Dog GetDogById(int id)
         {
-            Dog dog = null;
-            await Task.Run(() => dog = Repository.GetDogById(id));
-            return dog;
+            return Repository.GetDogById(id);
         }
 
         public static void DeleteClient(Client client)
