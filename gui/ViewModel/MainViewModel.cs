@@ -78,7 +78,6 @@ namespace app.ViewModel
 
             Clients = new ObservableCollection<Client>(fetchedClients);
             ShowDogs = false;
-            MessageBox.Show("Done!");
         }
 
         private void PopulateDogData()
@@ -87,7 +86,6 @@ namespace app.ViewModel
 
             Dogs = new ObservableCollection<Dog>(fetchedDogs);
             ShowDogs = true;
-            MessageBox.Show("Done!");
         }
 
         public DelegateCommand GetClientDataCmd { get; private set; }
@@ -100,6 +98,7 @@ namespace app.ViewModel
             ShowDogs = false;
             GetClientDataCmd = new DelegateCommand(PopulateClientData);
             GetDogDataCmd = new DelegateCommand(PopulateDogData);
+            PopulateClientData();
         }
     }
 }

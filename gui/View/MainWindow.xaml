@@ -16,58 +16,41 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="532*"/>
+            <ColumnDefinition Width="275*"/>
+            <ColumnDefinition Width="256*"/>
             <ColumnDefinition Width="81*"/>
             <ColumnDefinition Width="180*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Pobierz informacje o klientach" HorizontalAlignment="Left" Margin="60,28,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click" Command="{Binding GetClientDataCmd}" />
-        <Button Content="Pobierz informacje o psach" HorizontalAlignment="Left" Margin="261,28,0,0" VerticalAlignment="Top" Width="154" Click="Button_Click" Command="{Binding GetDogDataCmd}" />
-        <ListBox ItemsSource="{Binding Clients}"
-                 Grid.ColumnSpan="3"
-                 Margin="27,84,0,0" 
-                 HorizontalAlignment="Left"
-                 Height="304"
-                 VerticalAlignment="Top"
-                 Width="755" >
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding client_id}"/>
-                        <Label Content="{Binding client_name}"/>
-                        <Label Content="{Binding client_surname}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <ListBox ItemsSource="{Binding Dogs}"
+        <Button Content="Klienci" HorizontalAlignment="Left" Margin="60,28,0,0" VerticalAlignment="Top" Width="51" Click="Button_Click" Command="{Binding GetClientDataCmd}" />
+        <Button Content="Psy" HorizontalAlignment="Left" Margin="116,28,0,0" VerticalAlignment="Top" Width="52" Click="Button_Click" Command="{Binding GetDogDataCmd}" />
+        <DataGrid ItemsSource="{Binding Clients}"
                  Grid.ColumnSpan="3"
                  Margin="27,84,0,0" 
                  HorizontalAlignment="Left"
                  Height="304"
                  VerticalAlignment="Top"
                  Width="755"
-                 Visibility="{Binding ShowDogs, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <!--
-            <ListBox.Style>
-                <Style TargetType="{x:Type ListBox}">
-                    <Setter Property="Visibility" Value="Hidden" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ShowDogs, UpdateSourceTrigger=PropertyChanged}">
-                            <Setter Property="Visibility" Value="{Binding Boolean}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
-            -->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding dog_id}"/>
-                        <Label Content="{Binding dog_name}"/>
-                        <Label Content="{Binding dog_owner_id}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                 AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID klienta" Binding="{Binding client_id}"/>
+                <DataGridTextColumn Header="Imię" Binding="{Binding client_name}"/>
+                <DataGridTextColumn Header="Nazwisko" Binding="{Binding client_surname}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid ItemsSource="{Binding Dogs}"
+                 Grid.ColumnSpan="3"
+                 Margin="27,84,0,0" 
+                 HorizontalAlignment="Left"
+                 Height="304"
+                 VerticalAlignment="Top"
+                 Width="755"
+                 Visibility="{Binding ShowDogs, Converter={StaticResource BooleanToVisibilityConverter}}"
+                 AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID psa" Binding="{Binding dog_id}"/>
+                <DataGridTextColumn Header="Imię" Binding="{Binding dog_name}"/>
+                <DataGridTextColumn Header="ID właściciela" Binding="{Binding dog_owner_id}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
