@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using app.Model;
+using services;
 
 namespace app.View
 {
@@ -24,14 +26,25 @@ namespace app.View
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ClientsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ClientsWindow == null)
+            {
+                ClientsWindow = new ClientsWindow(this);
+                ClientsWindow.Show();
+            }
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DogsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (DogsWindow == null)
+            {
+                DogsWindow = new DogsWindow(this);
+                DogsWindow.Show();
+            }
         }
+
+        public ClientsWindow ClientsWindow { get; set; } = null;
+        public DogsWindow DogsWindow { get; set; } = null;
     }
 }

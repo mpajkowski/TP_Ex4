@@ -12,6 +12,7 @@ using services;
 using app.Model;
 using System.Windows.Forms;
 using System.Windows.Controls;
+using System.Collections.Specialized;
 
 namespace app.ViewModel
 {
@@ -39,13 +40,24 @@ namespace app.ViewModel
             }
         }
 
-        private bool showDogs;
-        public bool ShowDogs
+        private Client currentClient;
+        public Client CurrentClient
         {
-            get => showDogs;
+            get => currentClient;
             set
             {
-                showDogs = value;
+                currentClient = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private Dog currentDog;
+        public Dog CurrentDog
+        {
+            get => currentDog;
+            set
+            {
+                currentDog = value;
                 RaisePropertyChanged();
             }
         }
@@ -72,12 +84,22 @@ namespace app.ViewModel
             }
         }
 
+        public String newDogName;
+        public String NewDogName
+        {
+            get => newDogName;
+            set
+            {
+                newDogName = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private void PopulateClientData()
         {
             IEnumerable<Client> fetchedClients = DataHandling.GetClientsList();
 
             Clients = new ObservableCollection<Client>(fetchedClients);
-            ShowDogs = false;
         }
 
         private void PopulateDogData()
@@ -85,20 +107,66 @@ namespace app.ViewModel
             IEnumerable<Dog> fetchedDogs = DataHandling.GetDogsList();
 
             Dogs = new ObservableCollection<Dog>(fetchedDogs);
-            ShowDogs = true;
+        }
+
+        private void UpdateCurrentClient()
+        {
+            if (CurrentClient != null)
+            {
+                DataHandling.UpdateClientData(currentClient);
+            }
+        }
+
+        private void UpdateCurrentDog()
+        {
+            if (CurrentDog != null)
+            {
+                DataHandling.UpdateDogData(currentDog);
+            }
+        }
+
+        private void DeleteCurrentClient()
+        {
+            if (CurrentClient != null)
+            {
+                DataHandling.DeleteClient(currentClient);
+                Clients.Remove(CurrentClient);
+            }
+        }
+
+        private void DeleteCurrentDog()
+        {
+            if (CurrentDog != null)
+            {
+                DataHandling.DeleteDog(CurrentDog);
+                Dogs.Remove(CurrentDog);
+            }
         }
 
         public DelegateCommand GetClientDataCmd { get; private set; }
         public DelegateCommand GetDogDataCmd { get; private set; }
 
+        public DelegateCommand UpdateCurrentClientCmd { get; private set; }
+        public DelegateCommand UpdateCurrentDogCmd { get; private set; }
+
+        public DelegateCommand DeleteCurrentClientCmd { get; private set; }
+        public DelegateCommand DeleteCurrentDogCmd { get; private set; }
+
         public MainViewModel()
         {
             clients = new ObservableCollection<Client>();
             dogs = new ObservableCollection<Dog>();
-            ShowDogs = false;
+
             GetClientDataCmd = new DelegateCommand(PopulateClientData);
             GetDogDataCmd = new DelegateCommand(PopulateDogData);
-            PopulateClientData();
+
+            UpdateCurrentClientCmd = new DelegateCommand(UpdateCurrentClient);
+            UpdateCurrentDogCmd = new DelegateCommand(UpdateCurrentDog);
+
+            DeleteCurrentClientCmd = new DelegateCommand(DeleteCurrentClient);
+            DeleteCurrentDogCmd = new DelegateCommand(DeleteCurrentDog);
+
+            PopulateClientData(); 
         }
     }
 }
