@@ -65,6 +65,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\IDataHandler.cs" />
+    <Compile Include="Model\IDialogService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\ClientsWindow.xaml.cs">
       <DependentUpon>ClientsWindow.xaml</DependentUpon>

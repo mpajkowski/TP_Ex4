@@ -14,6 +14,16 @@ using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Collections.Specialized;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("appTests")]
+
+class DialogService : IDialogService
+{
+    public void Show(string text)
+    {
+        MessageBox.Show(text);
+    }
+}
+
 namespace app.ViewModel
 {
     public class MainViewModel : BindableBase
@@ -26,6 +36,7 @@ namespace app.ViewModel
         private static readonly string DATA_UPDATED = "Zaaktualizowao dane!";
 
         private IDataHandler dataHandler;
+        private IDialogService dialogService;
 
         private ObservableCollection<Client> clients;
         public ObservableCollection<Client> Clients
@@ -115,19 +126,19 @@ namespace app.ViewModel
             }
         }
 
-        private void PopulateClientData()
+        internal void PopulateClientData()
         {
             IEnumerable<Client> fetchedClients = dataHandler.GetClientsList();
             Clients = new ObservableCollection<Client>(fetchedClients);
         }
 
-        private void PopulateDogData()
+        internal void PopulateDogData()
         {
             IEnumerable<Dog> fetchedDogs = dataHandler.GetDogsList();
             Dogs = new ObservableCollection<Dog>(fetchedDogs);
         }
 
-        private void UpdateCurrentClient()
+        internal void UpdateCurrentClient()
         {
             if (CurrentClient == null)
             {
@@ -137,22 +148,22 @@ namespace app.ViewModel
             if (CurrentClient.client_name.Length >= 50
                 || CurrentClient.client_surname.Length >= 50)
             {
-                MessageBox.Show(TEXT_TOO_LONG);
+                dialogService.Show(TEXT_TOO_LONG);
                 return;
             }
 
             if (CurrentClient.client_name == String.Empty
                 || CurrentClient.client_surname == String.Empty)
             {
-                MessageBox.Show(EMPTY_BOX);
+                dialogService.Show(EMPTY_BOX);
                 return;
             }
 
             dataHandler.UpdateClientData(currentClient);
-            MessageBox.Show(DATA_UPDATED);
+            dialogService.Show(DATA_UPDATED);
         }
 
-        private void UpdateCurrentDog()
+        internal void UpdateCurrentDog()
         {
             if (CurrentDog == null)
             {
@@ -161,13 +172,13 @@ namespace app.ViewModel
             
             if (CurrentDog.dog_name.Length >= DataHandler.VARCHAR_COUNT)
             {
-                MessageBox.Show(TEXT_TOO_LONG);
+                dialogService.Show(TEXT_TOO_LONG);
                 return;
             }
 
             if (!CurrentDog.dog_owner_id.HasValue || CurrentDog.dog_name == String.Empty)
             {
-                MessageBox.Show(EMPTY_BOX);
+                dialogService.Show(EMPTY_BOX);
                 return;
             }
 
@@ -175,29 +186,29 @@ namespace app.ViewModel
 
             if (client == null)
             {
-                MessageBox.Show(CLIENT_NOT_FOUND);
+                dialogService.Show(CLIENT_NOT_FOUND);
             }
             else
             {
                 dataHandler.UpdateDogData(currentDog);
-                MessageBox.Show(DATA_UPDATED);
+                dialogService.Show(DATA_UPDATED);
             }
 
         }
 
-        private void CreateNewClient()
+        internal void CreateNewClient()
         {
             if (NewClientName.Length >= DataHandler.VARCHAR_COUNT
                 && NewClientSurname.Length >= DataHandler.VARCHAR_COUNT)
             {
-                MessageBox.Show(TEXT_TOO_LONG);
+                dialogService.Show(TEXT_TOO_LONG);
                 return;
             }
 
             if (NewClientName == String.Empty
                 || NewClientSurname == String.Empty)
             {
-                MessageBox.Show(EMPTY_BOX);
+                dialogService.Show(EMPTY_BOX);
                 return;
             }
 
@@ -208,22 +219,31 @@ namespace app.ViewModel
             };
 
             dataHandler.CreateClientEntry(newClient);
-            MessageBox.Show(DATA_UPDATED);
+            dialogService.Show(DATA_UPDATED);
         }
 
-        private void CreateNewDog()
+        internal void CreateNewDog()
         {
             if (NewDogName.Length >= DataHandler.VARCHAR_COUNT)
             {
-                MessageBox.Show(TEXT_TOO_LONG);
+                dialogService.Show(TEXT_TOO_LONG);
                 return;
             }
 
-            int newOwnerId = int.Parse(NewDogOwner);
+            int newOwnerId = 0;
+            try
+            {
+                newOwnerId = int.Parse(NewDogOwner);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
             Client newOwner = dataHandler.GetClientById(newOwnerId);
             if (newOwner == null)
             {
-                MessageBox.Show(CLIENT_NOT_FOUND);
+                dialogService.Show(CLIENT_NOT_FOUND);
                 return;
             }
 
@@ -234,10 +254,10 @@ namespace app.ViewModel
             };
 
             dataHandler.CreateDogEntry(newDog);
-            MessageBox.Show(DATA_UPDATED);
+            dialogService.Show(DATA_UPDATED);
         }
 
-        private void DeleteCurrentClient()
+        internal void DeleteCurrentClient()
         {
             if (CurrentClient != null)
             {
@@ -245,25 +265,37 @@ namespace app.ViewModel
                 {
                     if (dog.dog_owner_id == CurrentClient.client_id)
                     {
-                        MessageBox.Show("Nie można usunąć klienta, który ma odwołanie do psa!");
+                        dialogService.Show("Nie można usunąć klienta, który ma odwołanie do psa!");
                         return;
                     }
                 }
 
                 dataHandler.DeleteClient(currentClient);
                 Clients.Remove(CurrentClient);
-                MessageBox.Show(DATA_UPDATED);
+                dialogService.Show(DATA_UPDATED);
             }
         }
 
-        private void DeleteCurrentDog()
+        internal void DeleteCurrentDog()
         {
             if (CurrentDog != null)
             {
                 dataHandler.DeleteDog(CurrentDog);
                 Dogs.Remove(CurrentDog);
-                MessageBox.Show(DATA_UPDATED);
+                dialogService.Show(DATA_UPDATED);
             }
+        }
+
+        // for testing purposes
+        internal void InjectDataHandler(IDataHandler dataHandler)
+        {
+            this.dataHandler = dataHandler;
+        }
+
+        // for testing purposes
+        internal void InjectDialogService(IDialogService dialogService)
+        {
+            this.dialogService = dialogService;
         }
 
         public DelegateCommand GetClientDataCmd { get; private set; }
@@ -281,11 +313,15 @@ namespace app.ViewModel
         public MainViewModel()
         {
             dataHandler = new DataHandler();
+            dialogService = new DialogService();
             clients = new ObservableCollection<Client>();
             dogs = new ObservableCollection<Dog>();
 
             newClientName = String.Empty;
             newClientSurname = String.Empty;
+
+            newDogName = String.Empty;
+            newDogOwner = String.Empty;
 
             GetClientDataCmd = new DelegateCommand(PopulateClientData);
             GetDogDataCmd = new DelegateCommand(PopulateDogData);

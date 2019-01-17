@@ -7,7 +7,7 @@ using services;
 
 namespace app.Model
 {
-    interface IDataHandler
+    public interface IDataHandler
     {
         void CreateClientEntry(Client client);
         void CreateDogEntry(Dog dog);
