@@ -13,6 +13,8 @@ using app.Model;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Collections.Specialized;
+using System.Windows;
+using MessageBox = System.Windows.MessageBox;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("appTests")]
 
@@ -21,6 +23,11 @@ class DialogService : IDialogService
     public void Show(string text)
     {
         MessageBox.Show(text);
+    }
+
+    public MessageBoxResult YesNo(string title, string text)
+    {
+        return MessageBox.Show(text, title, MessageBoxButton.YesNo);
     }
 }
 
@@ -33,7 +40,7 @@ namespace app.ViewModel
         private static readonly string CLIENT_NOT_FOUND
             = "Nie znaleziono klienta o podanym ID";
         private static readonly string EMPTY_BOX = "Puste pole!";
-        private static readonly string DATA_UPDATED = "Zaaktualizowao dane!";
+        private static readonly string DATA_UPDATED = "Zaaktualizowano dane!";
 
         private IDataHandler dataHandler;
         private IDialogService dialogService;
@@ -259,8 +266,16 @@ namespace app.ViewModel
 
         internal void DeleteCurrentClient()
         {
+
             if (CurrentClient != null)
             {
+                MessageBoxResult prompt = dialogService.YesNo("Usuwanie klienta", "Czy jesteś pewien/pewna?");
+
+                if (prompt != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
                 foreach (var dog in dataHandler.GetDogsList())
                 {
                     if (dog.dog_owner_id == CurrentClient.client_id)
@@ -280,6 +295,13 @@ namespace app.ViewModel
         {
             if (CurrentDog != null)
             {
+                MessageBoxResult prompt = dialogService.YesNo("Usuwanie psa", "Czy jesteś pewien/pewna?");
+
+                if (prompt != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
                 dataHandler.DeleteDog(CurrentDog);
                 Dogs.Remove(CurrentDog);
                 dialogService.Show(DATA_UPDATED);

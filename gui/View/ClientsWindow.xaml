@@ -19,7 +19,7 @@
             Height="293"
             VerticalAlignment="Top"
             Width="756"
-            AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
+            AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID klienta" Binding="{Binding client_id}"/>
                 <DataGridTextColumn Header="Imię" Binding="{Binding client_name}"/>

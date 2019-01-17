@@ -15,7 +15,7 @@
     <Grid Margin="0,0,426,25">
         <TextBox HorizontalAlignment="Left" Height="23" Margin="147,40,-405,0" TextWrapping="Wrap" Text="{Binding NewClientName}" VerticalAlignment="Top" Width="267"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="147,85,-405,0" TextWrapping="Wrap" Text="{Binding NewClientSurname}" VerticalAlignment="Top" Width="267"/>
-        <Button Content="Utwórz nowy wpis" HorizontalAlignment="Left" Height="25" Margin="254,140,-376,0" VerticalAlignment="Top" Width="131" Command="{Binding CreateNewClientCmd}" Click="Button_Click"/>
+        <Button Content="Utwórz nowy wpis" HorizontalAlignment="Left" Height="25" Margin="254,140,-376,0" VerticalAlignment="Top" Width="131" Command="{Binding CreateNewClientCmd}" />
         <Label Content="Imię" HorizontalAlignment="Left" Margin="100,37,-133,0" VerticalAlignment="Top" Width="42"/>
         <Label Content="Nazwisko" HorizontalAlignment="Left" Margin="74,85,-124,0" VerticalAlignment="Top" Width="59"/>
     </Grid>

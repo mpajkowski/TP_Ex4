@@ -9,5 +9,6 @@ namespace app.Model
     interface IDialogService
     {
         void Show(string text);
+        System.Windows.MessageBoxResult YesNo(string title, string text);
     }
 }

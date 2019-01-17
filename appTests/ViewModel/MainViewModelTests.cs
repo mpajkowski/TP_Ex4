@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using appTests.Model;
 using app.Model;
+using System.Windows;
 
 namespace app.ViewModel.Tests
 {
@@ -15,6 +16,11 @@ namespace app.ViewModel.Tests
         public void Show(string text)
         {
             Console.WriteLine(text);
+        }
+
+        public MessageBoxResult YesNo(string title, string text)
+        {
+            return MessageBoxResult.Yes;
         }
     }
 

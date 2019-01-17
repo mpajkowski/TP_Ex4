@@ -21,26 +21,11 @@ namespace app.View
     /// </summary>
     public partial class ClientsWindow : Window
     {
-        public ClientsWindow(Window1 parent)
+        public ClientsWindow(MainWindow parent)
         {
             InitializeComponent();
             this.parent = parent;
             CreateNewClientWindow = null;
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -64,7 +49,7 @@ namespace app.View
             }
         }
 
-        private Window1 parent;
+        private MainWindow parent;
         public CreateNewClientWindow CreateNewClientWindow { get; set; }
     }
 }

@@ -20,11 +20,13 @@ namespace app.View
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class MainWindow : Window
     {
-        public Window1()
+        public MainWindow()
         {
             InitializeComponent();
+            ClientsWindow = null;
+            DogsWindow = null;
         }
 
         private void ClientsButton_Click(object sender, RoutedEventArgs e)
@@ -56,7 +58,7 @@ namespace app.View
             base.OnClosing(e);
         }
 
-        public ClientsWindow ClientsWindow { get; set; } = null;
-        public DogsWindow DogsWindow { get; set; } = null;
+        public ClientsWindow ClientsWindow { get; set; }
+        public DogsWindow DogsWindow { get; set; }
     }
 }

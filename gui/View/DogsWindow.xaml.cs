@@ -20,16 +20,11 @@ namespace app.View
     /// </summary>
     public partial class DogsWindow : Window
     {
-        public DogsWindow(Window1 parent)
+        public DogsWindow(MainWindow parent)
         {
             InitializeComponent();
             this.parent = parent;
             this.CreateNewDogWindow = null;
-        }
-
-        private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -44,7 +39,7 @@ namespace app.View
             base.OnClosing(e);
         }
 
-        private Window1 parent;
+        private MainWindow parent;
         public CreateNewDogWindow CreateNewDogWindow { get; set; }
 
         private void AddNewDog_Click(object sender, RoutedEventArgs e)

@@ -28,11 +28,6 @@ namespace app.View
 
         private DogsWindow parent;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             parent.CreateNewDogWindow = null;
