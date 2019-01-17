@@ -6,22 +6,13 @@
         xmlns:local="clr-namespace:app.View"
         xmlns:ViewModel="clr-namespace:app.ViewModel"
         mc:Ignorable="d"
-        Title="Przychodnia dla psów" Height="450" Width="800">
+        Title="Przychodnia dla psów" Height="165.089" Width="270.118">
     <Window.DataContext>
         <ViewModel:MainViewModel />
     </Window.DataContext>
 
-    <Grid>
-        <Grid.Resources>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="275*"/>
-            <ColumnDefinition Width="256*"/>
-            <ColumnDefinition Width="81*"/>
-            <ColumnDefinition Width="180*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="ClientsButton" Content="Klienci" HorizontalAlignment="Left" Margin="60,28,0,0" VerticalAlignment="Top" Width="51" Click="ClientsButton_Click" Command="{Binding GetClientDataCmd}" />
-        <Button x:Name="DogsButton" Content="Psy" HorizontalAlignment="Left" Margin="116,28,0,0" VerticalAlignment="Top" Width="52" Click="DogsButton_Click" Command="{Binding GetDogDataCmd}" />
+    <Grid Width="262" Margin="0,0,0,1">
+        <Button x:Name="ClientsButton" Content="Widok klientów" HorizontalAlignment="Left" Margin="22,52,0,0" VerticalAlignment="Top" Width="88" Click="ClientsButton_Click" Command="{Binding GetClientDataCmd}" />
+        <Button x:Name="DogsButton" Content="Widok psów" HorizontalAlignment="Left" Margin="143,52,0,0" VerticalAlignment="Top" Width="92" Click="DogsButton_Click" Command="{Binding GetDogDataCmd}" />
     </Grid>
 </Window>

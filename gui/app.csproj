@@ -64,9 +64,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\IDataHandler.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\ClientsWindow.xaml.cs">
       <DependentUpon>ClientsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CreateNewDogWindow.xaml.cs">
+      <DependentUpon>CreateNewDogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CreateNewClientWindow.xaml.cs">
+      <DependentUpon>CreateNewClientWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DogsWindow.xaml.cs">
       <DependentUpon>DogsWindow.xaml</DependentUpon>
@@ -112,6 +119,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\ClientsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CreateNewDogWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CreateNewClientWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

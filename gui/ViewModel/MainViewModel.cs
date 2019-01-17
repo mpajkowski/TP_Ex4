@@ -16,8 +16,17 @@ using System.Collections.Specialized;
 
 namespace app.ViewModel
 {
-    class MainViewModel : BindableBase
+    public class MainViewModel : BindableBase
     {
+        private static readonly string TEXT_TOO_LONG 
+            = "Dane zawierają nieprawidłowy format (długość imienia lub nazwiska jest większa niż 50 znaków)";
+        private static readonly string CLIENT_NOT_FOUND
+            = "Nie znaleziono klienta o podanym ID";
+        private static readonly string EMPTY_BOX = "Puste pole!";
+        private static readonly string DATA_UPDATED = "Zaaktualizowao dane!";
+
+        private IDataHandler dataHandler;
+
         private ObservableCollection<Client> clients;
         public ObservableCollection<Client> Clients
         {
@@ -95,42 +104,155 @@ namespace app.ViewModel
             }
         }
 
+        public String newDogOwner;
+        public String NewDogOwner
+        {
+            get => newDogOwner;
+            set
+            {
+                newDogOwner = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private void PopulateClientData()
         {
-            IEnumerable<Client> fetchedClients = DataHandling.GetClientsList();
-
+            IEnumerable<Client> fetchedClients = dataHandler.GetClientsList();
             Clients = new ObservableCollection<Client>(fetchedClients);
         }
 
         private void PopulateDogData()
         {
-            IEnumerable<Dog> fetchedDogs = DataHandling.GetDogsList();
-
+            IEnumerable<Dog> fetchedDogs = dataHandler.GetDogsList();
             Dogs = new ObservableCollection<Dog>(fetchedDogs);
         }
 
         private void UpdateCurrentClient()
         {
-            if (CurrentClient != null)
+            if (CurrentClient == null)
             {
-                DataHandling.UpdateClientData(currentClient);
+                return;
             }
+
+            if (CurrentClient.client_name.Length >= 50
+                || CurrentClient.client_surname.Length >= 50)
+            {
+                MessageBox.Show(TEXT_TOO_LONG);
+                return;
+            }
+
+            if (CurrentClient.client_name == String.Empty
+                || CurrentClient.client_surname == String.Empty)
+            {
+                MessageBox.Show(EMPTY_BOX);
+                return;
+            }
+
+            dataHandler.UpdateClientData(currentClient);
+            MessageBox.Show(DATA_UPDATED);
         }
 
         private void UpdateCurrentDog()
         {
-            if (CurrentDog != null)
+            if (CurrentDog == null)
             {
-                DataHandling.UpdateDogData(currentDog);
+                return;
             }
+            
+            if (CurrentDog.dog_name.Length >= DataHandler.VARCHAR_COUNT)
+            {
+                MessageBox.Show(TEXT_TOO_LONG);
+                return;
+            }
+
+            if (!CurrentDog.dog_owner_id.HasValue || CurrentDog.dog_name == String.Empty)
+            {
+                MessageBox.Show(EMPTY_BOX);
+                return;
+            }
+
+            Client client = dataHandler.GetClientById(currentDog.dog_owner_id.Value);
+
+            if (client == null)
+            {
+                MessageBox.Show(CLIENT_NOT_FOUND);
+            }
+            else
+            {
+                dataHandler.UpdateDogData(currentDog);
+                MessageBox.Show(DATA_UPDATED);
+            }
+
+        }
+
+        private void CreateNewClient()
+        {
+            if (NewClientName.Length >= DataHandler.VARCHAR_COUNT
+                && NewClientSurname.Length >= DataHandler.VARCHAR_COUNT)
+            {
+                MessageBox.Show(TEXT_TOO_LONG);
+                return;
+            }
+
+            if (NewClientName == String.Empty
+                || NewClientSurname == String.Empty)
+            {
+                MessageBox.Show(EMPTY_BOX);
+                return;
+            }
+
+            Client newClient = new Client
+            {
+                client_name = NewClientName,
+                client_surname = NewClientSurname
+            };
+
+            dataHandler.CreateClientEntry(newClient);
+            MessageBox.Show(DATA_UPDATED);
+        }
+
+        private void CreateNewDog()
+        {
+            if (NewDogName.Length >= DataHandler.VARCHAR_COUNT)
+            {
+                MessageBox.Show(TEXT_TOO_LONG);
+                return;
+            }
+
+            int newOwnerId = int.Parse(NewDogOwner);
+            Client newOwner = dataHandler.GetClientById(newOwnerId);
+            if (newOwner == null)
+            {
+                MessageBox.Show(CLIENT_NOT_FOUND);
+                return;
+            }
+
+            Dog newDog = new Dog()
+            {
+                dog_name = NewDogName,
+                dog_owner_id = newOwnerId
+            };
+
+            dataHandler.CreateDogEntry(newDog);
+            MessageBox.Show(DATA_UPDATED);
         }
 
         private void DeleteCurrentClient()
         {
             if (CurrentClient != null)
             {
-                DataHandling.DeleteClient(currentClient);
+                foreach (var dog in dataHandler.GetDogsList())
+                {
+                    if (dog.dog_owner_id == CurrentClient.client_id)
+                    {
+                        MessageBox.Show("Nie można usunąć klienta, który ma odwołanie do psa!");
+                        return;
+                    }
+                }
+
+                dataHandler.DeleteClient(currentClient);
                 Clients.Remove(CurrentClient);
+                MessageBox.Show(DATA_UPDATED);
             }
         }
 
@@ -138,8 +260,9 @@ namespace app.ViewModel
         {
             if (CurrentDog != null)
             {
-                DataHandling.DeleteDog(CurrentDog);
+                dataHandler.DeleteDog(CurrentDog);
                 Dogs.Remove(CurrentDog);
+                MessageBox.Show(DATA_UPDATED);
             }
         }
 
@@ -149,13 +272,20 @@ namespace app.ViewModel
         public DelegateCommand UpdateCurrentClientCmd { get; private set; }
         public DelegateCommand UpdateCurrentDogCmd { get; private set; }
 
+        public DelegateCommand CreateNewClientCmd { get; private set; }
+        public DelegateCommand CreateNewDogCmd { get; private set; }
+
         public DelegateCommand DeleteCurrentClientCmd { get; private set; }
         public DelegateCommand DeleteCurrentDogCmd { get; private set; }
 
         public MainViewModel()
         {
+            dataHandler = new DataHandler();
             clients = new ObservableCollection<Client>();
             dogs = new ObservableCollection<Dog>();
+
+            newClientName = String.Empty;
+            newClientSurname = String.Empty;
 
             GetClientDataCmd = new DelegateCommand(PopulateClientData);
             GetDogDataCmd = new DelegateCommand(PopulateDogData);
@@ -163,10 +293,11 @@ namespace app.ViewModel
             UpdateCurrentClientCmd = new DelegateCommand(UpdateCurrentClient);
             UpdateCurrentDogCmd = new DelegateCommand(UpdateCurrentDog);
 
+            CreateNewClientCmd = new DelegateCommand(CreateNewClient);
+            CreateNewDogCmd = new DelegateCommand(CreateNewDog);
+
             DeleteCurrentClientCmd = new DelegateCommand(DeleteCurrentClient);
             DeleteCurrentDogCmd = new DelegateCommand(DeleteCurrentDog);
-
-            PopulateClientData(); 
         }
     }
 }

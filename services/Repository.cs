@@ -32,7 +32,7 @@ namespace services
             return (from client in Context.Clients
                     where id == client.client_id
                     select client)
-                    .Single();
+                    .SingleOrDefault();
         }
 
         public static IEnumerable<Dog> GetDogsList()
@@ -45,7 +45,7 @@ namespace services
             return (from dog in Context.Dogs
                     where id == dog.dog_owner_id
                     select dog)
-                    .Single();
+                    .SingleOrDefault();
         }
         public static void DeleteClient(Client client)
         {

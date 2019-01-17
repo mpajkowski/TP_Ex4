@@ -6,13 +6,13 @@
         xmlns:ViewModel="clr-namespace:app.ViewModel"
         xmlns:local="clr-namespace:app.View"
         mc:Ignorable="d"
-        Title="DogsWindow" Height="450" Width="800">
+        Title="Widok psów" Height="450" Width="800">
     <Window.DataContext>
         <ViewModel:MainViewModel />
     </Window.DataContext>
 
     <Grid>
-        <DataGrid ItemsSource="{Binding Dogs}" SelectedItem="{Binding CurrentDog}"
+        <DataGrid IsReadOnly="True" ItemsSource="{Binding Dogs}" SelectedItem="{Binding CurrentDog}"
             Margin="10,10,0,0" 
             HorizontalAlignment="Left"
             Height="293"
@@ -25,10 +25,13 @@
                 <DataGridTextColumn Header="ID właściciela" Binding="{Binding dog_owner_id}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="DogsButton" Content="Pobierz dane" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="84" Command="{Binding GetDogDataCmd}" />
+        <Button x:Name="DogsButton" Content="Pobierz dane" HorizontalAlignment="Left" Margin="10,364,0,0" VerticalAlignment="Top" Width="84" Command="{Binding GetDogDataCmd}" />
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,331,0,0" TextWrapping="Wrap" Text="{Binding CurrentDog.dog_name, TargetNullValue=x:Static system:String.Empty}" VerticalAlignment="Top" Width="310"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="371,331,0,0" TextWrapping="Wrap" Text="{Binding CurrentDog.dog_owner_id, TargetNullValue=x:Static system:String.Empty}" VerticalAlignment="Top" Width="58"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="371,331,0,0" TextWrapping="Wrap" Text="{Binding CurrentDog.dog_owner_id, TargetNullValue=x:Static system:String.Empty}" VerticalAlignment="Top" Width="104"/>
         <Button Content="Aktualizuj!" HorizontalAlignment="Left" Margin="587,334,0,0" VerticalAlignment="Top" Width="75" Command="{Binding UpdateCurrentDogCmd}"/>
         <Button Content="Usuń!" HorizontalAlignment="Left" Margin="691,334,0,0" VerticalAlignment="Top" Width="75" Command="{Binding DeleteCurrentDogCmd}"/>
+        <Button x:Name="AddNewDog" Content="Dodaj nowego psa" HorizontalAlignment="Left" Margin="124,364,0,0" VerticalAlignment="Top" Width="121" Click="AddNewDog_Click" />
+        <Label Content="Imię" HorizontalAlignment="Left" Margin="10,308,0,0" VerticalAlignment="Top"/>
+        <Label Content="ID klienta" HorizontalAlignment="Left" Margin="371,305,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -25,6 +25,7 @@ namespace app.View
         {
             InitializeComponent();
             this.parent = parent;
+            CreateNewClientWindow = null;
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -44,10 +45,26 @@ namespace app.View
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (CreateNewClientWindow != null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             parent.ClientsWindow = null;
             base.OnClosing(e);
         }
 
+        private void AddClientButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CreateNewClientWindow == null)
+            {
+                CreateNewClientWindow = new CreateNewClientWindow(this);
+                CreateNewClientWindow.Show();
+            }
+        }
+
         private Window1 parent;
+        public CreateNewClientWindow CreateNewClientWindow { get; set; }
     }
 }

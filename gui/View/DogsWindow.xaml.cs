@@ -24,6 +24,7 @@ namespace app.View
         {
             InitializeComponent();
             this.parent = parent;
+            this.CreateNewDogWindow = null;
         }
 
         private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -33,10 +34,26 @@ namespace app.View
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (CreateNewDogWindow != null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             parent.DogsWindow = null;
             base.OnClosing(e);
         }
 
         private Window1 parent;
+        public CreateNewDogWindow CreateNewDogWindow { get; set; }
+
+        private void AddNewDog_Click(object sender, RoutedEventArgs e)
+        {
+            if (CreateNewDogWindow == null)
+            {
+                CreateNewDogWindow = new CreateNewDogWindow(this);
+                CreateNewDogWindow.Show();
+            }
+        }
     }
 }

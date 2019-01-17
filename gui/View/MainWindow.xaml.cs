@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,17 @@ namespace app.View
                 DogsWindow = new DogsWindow(this);
                 DogsWindow.Show();
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (ClientsWindow != null || DogsWindow != null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            base.OnClosing(e);
         }
 
         public ClientsWindow ClientsWindow { get; set; } = null;

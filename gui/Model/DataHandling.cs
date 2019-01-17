@@ -7,53 +7,55 @@ using services;
 
 namespace app.Model
 {
-    class DataHandling
+    class DataHandler : IDataHandler
     {
-        public static void CreateClientEntry(Client client)
+        public static readonly int VARCHAR_COUNT = 50;
+
+        public void CreateClientEntry(Client client)
         {
             Task.Run(() => Repository.CreateClientEntry(client));
         }
 
-        public static void CreateDogEntry(Dog dog)
+        public void CreateDogEntry(Dog dog)
         {
             Task.Run(() => Repository.CreateDogEntry(dog));
         }
 
-        public static IEnumerable<Client> GetClientsList()
+        public IEnumerable<Client> GetClientsList()
         {
             return Repository.GetClientsList();
         }
-        public static Client GetClientById(int id)
+        public Client GetClientById(int id)
         {
             return Repository.GetClientById(id);
         }
 
-        public static IEnumerable<Dog> GetDogsList()
+        public IEnumerable<Dog> GetDogsList()
         {
             return Repository.GetDogsList();
         }
 
-        public static Dog GetDogById(int id)
+        public Dog GetDogById(int id)
         {
             return Repository.GetDogById(id);
         }
 
-        public static void DeleteClient(Client client)
+        public void DeleteClient(Client client)
         {
             Task.Run(() => Repository.DeleteClient(client));
         }
 
-        public static void DeleteDog(Dog dog)
+        public void DeleteDog(Dog dog)
         {
             Task.Run(() => Repository.DeleteDog(dog));
         }
 
-        public static void UpdateClientData(Client client)
+        public void UpdateClientData(Client client)
         {
             Task.Run(() => Repository.UpdateClientData(client));
         }
 
-        public static void UpdateDogData(Dog dog)
+        public void UpdateDogData(Dog dog)
         {
             Task.Run(() => Repository.UpdateDogData(dog));
         }
